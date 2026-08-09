@@ -13,10 +13,11 @@ const init = () => {
 
   // Create table element
   const tableEl = document.createElement('table');
-  tableEl.style = 'max-width: 100%; min-width: 380px; margin: 30px 0 30px 78px; font-variant-numeric: tabular-nums;'
+  tableEl.style = 'width: 100%; margin: 30px; font-variant-numeric: tabular-nums;'
 
   // Create and append header row
   const headerRow = document.createElement('tr');
+  headerRow.style = 'border-bottom: 1px solid #fff;'
 
   const thContent = document.createElement('th');
   thContent.textContent = 'Content';
@@ -24,31 +25,45 @@ const init = () => {
 
   const thPlayTime = document.createElement('th');
   thPlayTime.textContent = 'Play time';
-  thPlayTime.style = 'text-align: right; font-weight: 700;'
+  thPlayTime.style = 'text-align: right; font-weight: 700; padding: 2px;'
+
+  const thPercentage = document.createElement('th');
+  thPercentage.style = 'text-align: center; font-weight: 700;'
+  thPercentage.textContent = '%';
 
   headerRow.appendChild(thContent);
+  headerRow.appendChild(thPercentage);
   headerRow.appendChild(thPlayTime);
   tableEl.appendChild(headerRow);
 
-  // Track total play time in seconds
-  let totalSeconds = 0;
+  // Calculate total play time ahead of time
+  const totalSeconds = playTimeList.reduce((sum, item) => sum + item.play_time, 0);
 
   // Populate data rows
   playTimeList
     .sort((a, b) => b.play_time - a.play_time) // descending (biggest first)
     .forEach(({ play_time, content_type_name }) => {
-      totalSeconds += play_time;
-
       const row = document.createElement('tr');
+      row.style = 'border-bottom: 1px solid #ffffff3a;'
 
       const contentCell = document.createElement('td');
+      contentCell.style = 'padding: 2px;';
       contentCell.textContent = content_type_name;
+
+      const percentage = totalSeconds > 0
+        ? ((play_time / totalSeconds) * 100).toFixed(2)
+        : '0';
 
       const timeCell = document.createElement('td');
       timeCell.textContent = formatPlayTime(play_time);
-      timeCell.style = 'text-align: right;'
+      timeCell.style = 'text-align: right; white-space: nowrap; padding: 2px;'
+
+      const percentageCell = document.createElement('td');
+      percentageCell.style = 'text-align: center; opacity: 0.7;';
+      percentageCell.textContent = `${percentage}%`;
 
       row.appendChild(contentCell);
+      row.appendChild(percentageCell);
       row.appendChild(timeCell);
       tableEl.appendChild(row);
     });
@@ -62,9 +77,10 @@ const init = () => {
 
   const totalValueCell = document.createElement('th');
   totalValueCell.textContent = formatPlayTime(totalSeconds);
-  totalValueCell.style = 'text-align: right; font-weight: 700;';
+  totalValueCell.style = 'padding: 2px; text-align: right; font-weight: 700; white-space: nowrap;';
 
   totalRow.appendChild(totalLabelCell);
+  totalRow.appendChild(document.createElement('td'));
   totalRow.appendChild(totalValueCell);
   tableEl.appendChild(totalRow);
 
