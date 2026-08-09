@@ -1,12 +1,16 @@
 {
   "name": "sf6-play-time",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Street Fighter 6 Buckler play time display. Load a profile page and see the play time numbers under the existing chart.",
   "icons": {
     "16": "icon-162.png",
     "32": "icon-162.png",
     "48": "icon-162.png",
     "128": "icon-162.png"
+  },
+  "background": {
+    "service_worker": "./background.js",
+    "type": "module"
   },
   "content_scripts": [
     {

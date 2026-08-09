@@ -21,7 +21,10 @@ const init = () => {
 
   const allData = JSON.parse(dataString)
 
-  const playTimeList = allData.props.pageProps.play.base_info.content_play_time_list
+  const playTimeList = allData.props.pageProps.play?.base_info?.content_play_time_list
+  if (!playTimeList) {
+    return
+  }
 
   // Create table element
   const tableEl = document.createElement('table');
@@ -101,6 +104,9 @@ const init = () => {
 
   // Put it under the chart
   const targetElement = document.querySelector('[class^="play_data_time__"], [class*=" play_data_time__"]');
+  if (!targetElement) {
+    return
+  }
 
   targetElement.appendChild(tableEl);
 }
