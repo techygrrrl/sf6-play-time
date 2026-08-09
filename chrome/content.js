@@ -1,6 +1,18 @@
 const init = () => {
   console.log('🎮 initializing sf6-play-time')
 
+  const colours = new Map()
+  colours.set(1, '#01bcb5') // world tour
+  colours.set(2, '#ea2743') // ranked
+  colours.set(3, '#fb8a10') // casual
+  colours.set(4, '#6200e3') // custom room
+  colours.set(5, '#0a65d8') // battle hub
+  colours.set(6, '#f157bc') // offline
+  colours.set(7, '#691c2a') // arcade
+  colours.set(8, '#d9d9d9') // practice
+  colours.set(9, '#cc73ff') // special matches
+  colours.set(10, '#007f44') // avatar room
+
   // Get the data
   const dataString = document.getElementById('__NEXT_DATA__')
     .innerHTML
@@ -42,13 +54,16 @@ const init = () => {
   // Populate data rows
   playTimeList
     .sort((a, b) => b.play_time - a.play_time) // descending (biggest first)
-    .forEach(({ play_time, content_type_name }) => {
+    .forEach(({ play_time, content_type, content_type_name }) => {
       const row = document.createElement('tr');
       row.style = 'border-bottom: 1px solid #ffffff3a;'
 
       const contentCell = document.createElement('td');
       contentCell.style = 'padding: 2px;';
-      contentCell.textContent = content_type_name;
+
+      const colour = colours.get(content_type)
+      const circleHtml = `<span style="width: 16px; height: 16px; display: inline-block; margin-right: 2px; margin-bottom: -3px; border-radius: 100%; background-color: ${colour}"></span>`
+      contentCell.innerHTML = `${circleHtml} ${content_type_name}`;
 
       const percentage = totalSeconds > 0
         ? ((play_time / totalSeconds) * 100).toFixed(2)
