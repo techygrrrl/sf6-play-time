@@ -30,10 +30,15 @@ const init = () => {
   headerRow.appendChild(thPlayTime);
   tableEl.appendChild(headerRow);
 
+  // Track total play time in seconds
+  let totalSeconds = 0;
+
   // Populate data rows
   playTimeList
     .sort((a, b) => b.play_time - a.play_time) // descending (biggest first)
     .forEach(({ play_time, content_type_name }) => {
+      totalSeconds += play_time;
+
       const row = document.createElement('tr');
 
       const contentCell = document.createElement('td');
@@ -47,6 +52,21 @@ const init = () => {
       row.appendChild(timeCell);
       tableEl.appendChild(row);
     });
+
+  // Create and append total summary row
+  const totalRow = document.createElement('tr');
+
+  const totalLabelCell = document.createElement('th');
+  totalLabelCell.style = 'text-align: left; font-weight: 700;';
+  totalLabelCell.textContent = 'Total';
+
+  const totalValueCell = document.createElement('th');
+  totalValueCell.textContent = formatPlayTime(totalSeconds);
+  totalValueCell.style = 'text-align: right; font-weight: 700;';
+
+  totalRow.appendChild(totalLabelCell);
+  totalRow.appendChild(totalValueCell);
+  tableEl.appendChild(totalRow);
 
   // Put it under the chart
   const targetElement = document.querySelector('[class^="play_data_time__"], [class*=" play_data_time__"]');
