@@ -12,20 +12,12 @@
     "service_worker": "./background.js",
     "type": "module"
   },
-  "content_scripts": [
-    {
-      "matches": [
-        "https://www.streetfighter.com/6/buckler/profile/*"
-      ],
-      "js": [
-        "./content.js"
-      ],
-      "run_at": "document_end",
-      "all_frames": true
-    }
-  ],
+  "action": {
+    "default_icon": "icon-162.png"
+  },
   "permissions": [
     "activeTab",
+    "scripting",
     "tabs"
   ],
   "host_permissions": [],
